@@ -1,0 +1,25 @@
+repos:
+  - repo: http://github.com/charliemarsh/ruff-pre-commit
+    rev: v0.0.269
+    hooks:
+      - id: ruff
+        args: [
+          --format=github,
+          --target-version=py37,
+          --fix,
+          --exit-non-zero-on-fix,
+        ]
+  - repo: http://github.com/asottile/reorder_python_imports
+    rev: v3.10.0
+    hooks:
+      - id: reorder-python-imports
+  - repo: http://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        language_version: python3
+  - repo: http://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

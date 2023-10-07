@@ -73,5 +73,6 @@
         "/home/${localEnv:USER}/code:/u/home/code",
         "-v",
         "/home/${localEnv:USER}/dump:/u/home/dump"
-    ]
+    ],
+    "postStartCommand": "pip3 install -e /u/home/code/nanoGPT"
 }
