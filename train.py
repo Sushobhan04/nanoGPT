@@ -27,6 +27,7 @@ import wandb
 from torch.distributed import destroy_process_group
 from torch.distributed import init_process_group
 from torch.nn.parallel import DistributedDataParallel as DDP
+from tqdm import tqdm
 
 from model import GPT
 from model import GPTConfig
@@ -296,7 +297,10 @@ t0 = time.time()
 local_iter_num = 0  # number of iterations in the lifetime of this process
 raw_model = model.module if ddp else model  # unwrap DDP container if needed
 running_mfu = -1.0
-while True:
+
+pbar = tqdm(range(max_iters))
+
+for _ in pbar:
     # determine and set the learning rate for this iteration
     lr = get_lr(iter_num) if decay_lr else learning_rate
     for param_group in optimizer.param_groups:
@@ -375,7 +379,7 @@ while True:
         if local_iter_num >= 5:  # let the training loop settle a bit
             mfu = raw_model.estimate_mfu(batch_size * gradient_accumulation_steps, dt)
             running_mfu = mfu if running_mfu == -1.0 else 0.9 * running_mfu + 0.1 * mfu
-        print(
+        pbar.set_description(
             f"iter {iter_num}: loss {lossf:.4f}, time {dt*1000:.2f}ms, mfu {running_mfu*100:.2f}%"
         )
     iter_num += 1
