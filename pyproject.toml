@@ -27,6 +27,7 @@ dependencies = [ # Optional
     "wandb",
     "tiktoken",
     "transformers",
+    "datasets",
 ]
 
 # The following would provide a command line executable called `sample`
